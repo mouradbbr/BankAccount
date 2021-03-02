@@ -1,4 +1,4 @@
-package com.kata.bankAccount;
+package com.kata.bankAccount.service;
 
 import static com.kata.bankAccount.model.RecordType.DEPOSIT;
 import static com.kata.bankAccount.model.RecordType.WITHDRAWAL;
@@ -25,13 +25,12 @@ import com.kata.bankAccount.model.Record;
 import com.kata.bankAccount.repository.AccountRepository;
 import com.kata.bankAccount.repository.RecordRepository;
 import com.kata.bankAccount.repository.exception.BusinessException;
-import com.kata.bankAccount.service.BankService;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BankAccountApplicationTests {
 
 	@InjectMocks
-	BankService bankService;
+	BankServiceImpl bankService;
 	@Mock
 	AccountRepository accountRepository;
 	@Mock
@@ -45,13 +44,12 @@ public class BankAccountApplicationTests {
 	@Test
 	public void should_make_deposit_correctly() throws BusinessException {
 		// Given
-		float balance = 15000;
 		Account account = Account.builder()
-				.balance(15000f)
+				.balance(15000)
 				.id(2l)
 				.build();
 		RecordDto record = RecordDto.builder()
-				.amount(10000f)
+				.amount(10000)
 				.type(DEPOSIT)
 				.build();
 		when(accountRepository.findById(eq(account.getId()))).thenReturn(Optional.ofNullable(account));
@@ -75,16 +73,15 @@ public class BankAccountApplicationTests {
 	public void should_make_withdrawal_correctly() throws BusinessException {
 		// Given
 		Account account = Account.builder()
-				.balance(15000f)
+				.balance(15000)
 				.id(2l)
 				.build();
 		RecordDto record = RecordDto.builder()
-				.amount(10000f)
+				.amount(10000)
 				.type(WITHDRAWAL)
 				.build();
 		when(accountRepository.findById(eq(account.getId()))).thenReturn(Optional.ofNullable(account));
-		when(accountRepository.save(any())).thenReturn(null);
-		when(recordRepository.save(any())).thenReturn(null);
+
 
 		// When
 		bankService.addRecordToAccount(account.getId(), record);
@@ -103,16 +100,15 @@ public class BankAccountApplicationTests {
 	public void should_throw_exception_when_withdrawal_amount_more_than_balance() throws BusinessException {
 		// Given
 		Account account = Account.builder()
-				.balance(15000f)
+				.balance(15000)
 				.id(2l)
 				.build();
 		RecordDto record = RecordDto.builder()
-				.amount(100000f)
+				.amount(100000)
 				.type(WITHDRAWAL)
 				.build();
 		when(accountRepository.findById(eq(account.getId()))).thenReturn(Optional.ofNullable(account));
-		when(accountRepository.save(any())).thenReturn(null);
-		when(recordRepository.save(any())).thenReturn(null);
+
 
 		// When
 		bankService.addRecordToAccount(account.getId(), record);
@@ -130,25 +126,4 @@ public class BankAccountApplicationTests {
 		bankService.getAccount(id);
 	}
 
-	@Test
-	public void should_see_account_history() {
-		// Given
-
-
-		Account account = Account.builder()
-				.balance(15000f)
-				.id(2l)
-				.build();
-		RecordDto record1 = RecordDto.builder()
-				.amount(10000f)
-				.type(WITHDRAWAL)
-				.build();
-		RecordDto record2 = RecordDto.builder()
-				.amount(500f)
-				.type(DEPOSIT)
-				.build();
-
-		//List<Account> accounts = bankService.getRecordsByAccountId();
-
-	}
 }

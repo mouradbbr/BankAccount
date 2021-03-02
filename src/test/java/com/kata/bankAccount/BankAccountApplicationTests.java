@@ -18,6 +18,7 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import com.kata.bankAccount.controller.dto.RecordDto;
 import com.kata.bankAccount.model.Account;
@@ -26,12 +27,12 @@ import com.kata.bankAccount.repository.AccountRepository;
 import com.kata.bankAccount.repository.RecordRepository;
 import com.kata.bankAccount.repository.exception.BusinessException;
 import com.kata.bankAccount.service.BankService;
-
+import com.kata.bankAccount.service.BankServiceImpl;
 @RunWith(MockitoJUnitRunner.class)
 public class BankAccountApplicationTests {
 
 	@InjectMocks
-	BankService bankService;
+	BankServiceImpl bankService;
 	@Mock
 	AccountRepository accountRepository;
 	@Mock
@@ -111,8 +112,6 @@ public class BankAccountApplicationTests {
 				.type(WITHDRAWAL)
 				.build();
 		when(accountRepository.findById(eq(account.getId()))).thenReturn(Optional.ofNullable(account));
-		when(accountRepository.save(any())).thenReturn(null);
-		when(recordRepository.save(any())).thenReturn(null);
 
 		// When
 		bankService.addRecordToAccount(account.getId(), record);

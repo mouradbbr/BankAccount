@@ -16,11 +16,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.kata.bankAccount.controller.dto.RecordDto;
 import com.kata.bankAccount.model.Account;
-import com.kata.bankAccount.model.Record;
 import com.kata.bankAccount.model.Customer;
+import com.kata.bankAccount.model.Record;
 import com.kata.bankAccount.repository.exception.BusinessException;
 import com.kata.bankAccount.service.BankService;
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {BankAccountApplication.class})
 public class BankAccountTestIT {

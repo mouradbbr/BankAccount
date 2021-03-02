@@ -36,6 +36,18 @@ public class Record {
 	@ManyToOne()
 	@JoinColumn(name = "accountId")
 	private Account account;
+	public Record() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	public Record(Long id, double amount, RecordType type, LocalDateTime date, Account account) {
+		super();
+		this.id = id;
+		this.amount = amount;
+		this.type = type;
+		this.date = date;
+		this.account = account;
+	}
 
 
 	

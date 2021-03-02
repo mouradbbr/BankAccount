@@ -9,6 +9,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.Test;
@@ -18,7 +20,6 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import com.kata.bankAccount.controller.dto.RecordDto;
 import com.kata.bankAccount.model.Account;
@@ -26,8 +27,8 @@ import com.kata.bankAccount.model.Record;
 import com.kata.bankAccount.repository.AccountRepository;
 import com.kata.bankAccount.repository.RecordRepository;
 import com.kata.bankAccount.repository.exception.BusinessException;
-import com.kata.bankAccount.service.BankService;
 import com.kata.bankAccount.service.BankServiceImpl;
+
 @RunWith(MockitoJUnitRunner.class)
 public class BankAccountApplicationTests {
 
@@ -42,19 +43,12 @@ public class BankAccountApplicationTests {
 	@Captor
 	ArgumentCaptor<Record> recordCaptor;
 
-
 	@Test
 	public void should_make_deposit_correctly() throws BusinessException {
 		// Given
 		float balance = 15000;
-		Account account = Account.builder()
-				.balance(15000f)
-				.id(2l)
-				.build();
-		RecordDto record = RecordDto.builder()
-				.amount(10000f)
-				.type(DEPOSIT)
-				.build();
+		Account account = Account.builder().balance(15000f).id(2l).build();
+		RecordDto record = RecordDto.builder().amount(10000f).type(DEPOSIT).build();
 		when(accountRepository.findById(eq(account.getId()))).thenReturn(Optional.ofNullable(account));
 		when(accountRepository.save(any())).thenReturn(null);
 		when(recordRepository.save(any())).thenReturn(null);
@@ -75,14 +69,8 @@ public class BankAccountApplicationTests {
 	@Test
 	public void should_make_withdrawal_correctly() throws BusinessException {
 		// Given
-		Account account = Account.builder()
-				.balance(15000f)
-				.id(2l)
-				.build();
-		RecordDto record = RecordDto.builder()
-				.amount(10000f)
-				.type(WITHDRAWAL)
-				.build();
+		Account account = Account.builder().balance(15000f).id(2l).build();
+		RecordDto record = RecordDto.builder().amount(10000f).type(WITHDRAWAL).build();
 		when(accountRepository.findById(eq(account.getId()))).thenReturn(Optional.ofNullable(account));
 		when(accountRepository.save(any())).thenReturn(null);
 		when(recordRepository.save(any())).thenReturn(null);
@@ -103,14 +91,8 @@ public class BankAccountApplicationTests {
 	@Test(expected = BusinessException.class)
 	public void should_throw_exception_when_withdrawal_amount_more_than_balance() throws BusinessException {
 		// Given
-		Account account = Account.builder()
-				.balance(15000f)
-				.id(2l)
-				.build();
-		RecordDto record = RecordDto.builder()
-				.amount(100000f)
-				.type(WITHDRAWAL)
-				.build();
+		Account account = Account.builder().balance(15000f).id(2l).build();
+		RecordDto record = RecordDto.builder().amount(100000f).type(WITHDRAWAL).build();
 		when(accountRepository.findById(eq(account.getId()))).thenReturn(Optional.ofNullable(account));
 
 		// When
@@ -130,24 +112,25 @@ public class BankAccountApplicationTests {
 	}
 
 	@Test
-	public void should_see_account_history() {
+	public void should_see_account_history() throws BusinessException {
 		// Given
+		Account account = Account.builder().balance(15000f).id(2l).build();
+		RecordDto record = RecordDto.builder().amount(10000f).type(WITHDRAWAL).build();
+		when(accountRepository.findById(eq(account.getId()))).thenReturn(Optional.ofNullable(account));
+		when(accountRepository.save(any())).thenReturn(null);
+		when(recordRepository.save(any())).thenReturn(null);
 
+		// When
+		bankService.addRecordToAccount(account.getId(), record);
 
-		Account account = Account.builder()
-				.balance(15000f)
-				.id(2l)
-				.build();
-		RecordDto record1 = RecordDto.builder()
-				.amount(10000f)
-				.type(WITHDRAWAL)
-				.build();
-		RecordDto record2 = RecordDto.builder()
-				.amount(500f)
-				.type(DEPOSIT)
-				.build();
-
-		//List<Account> accounts = bankService.getRecordsByAccountId();
+		// Then
+		verify(accountRepository).save(accountCaptor.capture());
+		verify(recordRepository).save(recordCaptor.capture());
+		Account savedAccount = accountCaptor.getValue();
+		Record savedRecord = recordCaptor.getValue();
+		when(recordRepository.findByAccount(savedAccount)).thenReturn(Arrays.asList(savedRecord));
+		List<Record> records = bankService.getRecordsByAccount(bankService.getAccount(Long.valueOf(2)));
+		assertThat(records.size()).isEqualTo(1);
 
 	}
 }

@@ -13,9 +13,9 @@ import com.kata.bankAccount.controller.dto.AccountDto;
 import com.kata.bankAccount.controller.dto.BankAccountDetails;
 import com.kata.bankAccount.controller.dto.RecordDto;
 import com.kata.bankAccount.controller.mapper.BankAccountMapper;
+import com.kata.bankAccount.exception.BusinessException;
 import com.kata.bankAccount.model.Account;
 import com.kata.bankAccount.model.Record;
-import com.kata.bankAccount.repository.exception.BusinessException;
 import com.kata.bankAccount.service.BankService;
 
 import io.swagger.annotations.Api;

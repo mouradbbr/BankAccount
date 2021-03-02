@@ -1,4 +1,4 @@
-package com.kata.bankAccount.repository.exception;
+package com.kata.bankAccount.exception;
 
 import lombok.Data;
 

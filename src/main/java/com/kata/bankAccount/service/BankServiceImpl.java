@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kata.bankAccount.controller.dto.RecordDto;
+import com.kata.bankAccount.exception.BusinessException;
+import com.kata.bankAccount.exception.ExceptionType;
 import com.kata.bankAccount.model.Account;
 import com.kata.bankAccount.model.Customer;
 import com.kata.bankAccount.model.Record;
@@ -15,8 +17,6 @@ import com.kata.bankAccount.model.RecordType;
 import com.kata.bankAccount.repository.AccountRepository;
 import com.kata.bankAccount.repository.CustomerRepository;
 import com.kata.bankAccount.repository.RecordRepository;
-import com.kata.bankAccount.repository.exception.BusinessException;
-import com.kata.bankAccount.repository.exception.ExceptionType;
 
 @Service
 public class BankServiceImpl implements BankService {

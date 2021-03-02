@@ -22,11 +22,11 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import com.kata.bankAccount.controller.dto.RecordDto;
+import com.kata.bankAccount.exception.BusinessException;
 import com.kata.bankAccount.model.Account;
 import com.kata.bankAccount.model.Record;
 import com.kata.bankAccount.repository.AccountRepository;
 import com.kata.bankAccount.repository.RecordRepository;
-import com.kata.bankAccount.repository.exception.BusinessException;
 import com.kata.bankAccount.service.BankServiceImpl;
 
 @RunWith(MockitoJUnitRunner.class)

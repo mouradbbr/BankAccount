@@ -28,7 +28,7 @@ Make a withdrawal from my account
 POST : ADD NEW RECORD WITH TYPE withdrawal
 http://localhost:8080/bankAccount/{ID_ACCOUNT}/record/add/withdrawal
 
-BODY : {"amount":1000, "type":"DEPOSIT"}
+BODY : {"amount":1000, "type":"WITHDRAWAL"}
 
 US 3:
 
